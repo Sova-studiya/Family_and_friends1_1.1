@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>School Objects — English Trainer</title>
+  <style>
+    :root {
+      --primary: #FF6B6B;
+      --primary-hover: #FF5252;
+      --secondary: #4ECDC4;
+      --accent: #FFE66D;
+      --bg: #F7F9FC;
+      --card-bg: #FFFFFF;
+      --text: #2C3E50;
+      --text-muted: #7F8C8D;
+      --success: #2ECC71;
+      --danger: #E74C3C;
+      --radius-lg: 24px;
+      --radius-md: 16px;
+      --radius-sm: 12px;
+      --shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      --font: 'Segoe UI', system-ui, -apple-system, Roboto, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: var(--font);
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px;
+    }
+
+    #app {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header & Navigation */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      margin-bottom: 16px;
+    }
+
+    .btn-icon {
+      background: var(--card-bg);
+      border: 2px solid #E2E8F0;
+      border-radius: var(--radius-sm);
+      padding: 10px 16px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.03);
+      transition: all 0.2s ease;
+    }
+
+    .btn-icon:active {
+      transform: scale(0.96);
+    }
+
+    /* Views & Animation */
+    .view {
+      display: none;
+      flex-direction: column;
+      flex: 1;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .view.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      text-align: center;
+      color: #2C3E50;
+      margin-bottom: 8px;
+    }
+
+    p.subtitle {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      margin-bottom: 24px;
+    }
+
+    /* Menu Grid */
+    .menu-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    .level-card {
+      background: var(--card-bg);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      border: 3px solid transparent;
+      transition: all 0.2s ease;
+    }
+
+    .level-card:hover {
+      border-color: var(--secondary);
+      transform: translateY(-2px);
+    }
+
+    .level-info {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .level-num {
+      background: var(--accent);
+      color: #D48800;
+      font-weight: 800;
+      font-size: 1.3rem;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .level-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .stars {
+      font-size: 1.4rem;
+      letter-spacing: 2px;
+    }
+
+    /* Progress Bar */
+    .progress-bar-container {
+      width: 100%;
+      height: 16px;
+      background: #E2E8F0;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--secondary), #2ECC71);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    .progress-text {
+      text-align: right;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    /* Exercise Card */
+    .exercise-card {
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .big-emoji {
+      font-size: 5rem;
+      line-height: 1.1;
+      margin-bottom: 12px;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+    }
+
+    .prompt-text {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+
+    .prompt-sub {
+      font-size: 1.3rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    /* Buttons & Options Grid */
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      width: 100%;
+    }
+
+    @media (max-width: 480px) {
+      .options-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .btn-option {
+      background: var(--card-bg);
+      border: 3px solid #E2E8F0;
+      border-radius: var(--radius-md);
+      padding: 16px;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 64px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+    }
+
+    .btn-option:active {
+      transform: scale(0.97);
+    }
+
+    .btn-option.correct {
+      background-color: #D4EDDA !important;
+      border-color: var(--success) !important;
+      color: #155724 !important;
+    }
+
+    .btn-option.wrong {
+      background-color: #F8D7DA !important;
+      border-color: var(--danger) !important;
+      color: #721C24 !important;
+    }
+
+    .btn-action {
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: var(--radius-md);
+      padding: 14px 24px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-action:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-action:active {
+      transform: scale(0.96);
+    }
+
+    .btn-audio {
+      background: var(--secondary);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 64px;
+      height: 64px;
+      font-size: 1.8rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(78, 205, 196, 0.4);
+      margin: 8px 0;
+      transition: transform 0.2s ease;
+    }
+
+    .btn-audio:active {
+      transform: scale(0.9);
+    }
+
+    /* Word Spelling & Letter Tiles */
+    .letters-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin: 16px 0;
+      min-height: 56px;
+    }
+
+    .letter-tile {
+      background: #EDF2F7;
+      border: 2px solid #CBD5E0;
+      border-radius: var(--radius-sm);
+      width: 48px;
+      height: 52px;
+      font-size: 1.5rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .letter-tile.used {
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    .word-slot {
+      border-bottom: 3px solid var(--text);
+      min-width: 36px;
+      height: 48px;
+      font-size: 1.8rem;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 4px;
+    }
+
+    /* Input Dictation */
+    .input-dictation {
+      width: 100%;
+      max-width: 300px;
+      padding: 12px 16px;
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-align: center;
+      border: 3px solid #E2E8F0;
+      border-radius: var(--radius-md);
+      outline: none;
+      margin-bottom: 12px;
+    }
+
+    .input-dictation:focus {
+      border-color: var(--secondary);
+    }
+
+    /* Dictionary */
+    .dict-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .dict-card {
+      background: var(--card-bg);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--shadow);
+    }
+
+    .dict-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .dict-word {
+      font-size: 1.3rem;
+      font-weight: 800;
+    }
+
+    .dict-trans {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+    }
+
+    /* Final Screen */
+    .final-card {
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      box-shadow: var(--shadow);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .final-stars {
+      font-size: 3.5rem;
+      letter-spacing: 4px;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #333;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 20px;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 1000;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="app">
+    <!-- Header -->
+    <header id="header" style="display: none;">
+      <button class="btn-icon" onclick="goHome()">🏠 Menu</button>
+      <div id="header-title" style="font-weight: 700; font-size: 1.1rem;"></div>
+    </header>
+
+    <!-- VIEW 0: MENU -->
+    <div id="view-menu" class="view active">
+      <h1>🎒 School Objects</h1>
+      <p class="subtitle">Учи слова легко и весело!</p>
+      <div class="menu-grid" id="menu-grid"></div>
+    </div>
+
+    <!-- VIEW 1: DICTIONARY -->
+    <div id="view-dict" class="view">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <button class="btn-action" onclick="playAllDictionary()">🔊 Озвучить все</button>
+        <button class="btn-icon" onclick="toggleDictTranslation()" id="btn-toggle-trans">👁 Скрыть перевод</button>
+      </div>
+      <div class="dict-list" id="dict-list"></div>
+    </div>
+
+    <!-- VIEW EXERCISE (Levels 2-7) -->
+    <div id="view-exercise" class="view">
+      <div class="progress-text" id="progress-text">1 / 6</div>
+      <div class="progress-bar-container">
+        <div class="progress-bar-fill" id="progress-bar"></div>
+      </div>
+
+      <div class="exercise-card" id="exercise-card"></div>
+      <div id="options-container" class="options-grid"></div>
+      <div id="action-container" style="margin-top: 16px; text-align: center;"></div>
+    </div>
+
+    <!-- VIEW FINAL -->
+    <div id="view-final" class="view">
+      <div class="final-card">
+        <div style="font-size: 4rem;">🎉</div>
+        <h2>Отличная работа!</h2>
+        <div class="final-stars" id="final-stars">⭐⭐⭐</div>
+        <p id="final-score" style="font-size: 1.2rem; color: var(--text-muted);"></p>
+
+        <div style="display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 250px; margin-top: 12px;">
+          <button class="btn-action" onclick="restartLevel()">🔄 Ещё раз</button>
+          <button class="btn-action" style="background: var(--secondary);" onclick="nextLevel()">➡️ Следующий уровень</button>
+          <button class="btn-icon" style="justify-content: center;" onclick="goHome()">🏠 В меню</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    /* 
+      =======================================================================
+      1. МАССИВ СЛОВ (ИЗМЕНЯЙТЕ И ДОБАВЛЯЙТЕ СЛОВА ЗДЕСЬ)
+      =======================================================================
+    */
+    const WORDS = [
+      { word: 'pencil', translation: 'карандаш', definition: 'You draw with it', emoji: '✏️' },
+      { word: 'pencil case', translation: 'пенал', definition: 'A box for pens and pencils', emoji: '👝' },
+      { word: 'ruler', translation: 'линейка', definition: 'It helps draw straight lines', emoji: '📏' },
+      { word: 'rubber', translation: 'ластик', definition: 'It removes pencil marks', emoji: '🧽' },
+      { word: 'book', translation: 'книга', definition: 'You read it', emoji: '📖' },
+      { word: 'pen', translation: 'ручка', definition: 'You write with it', emoji: '🖊️' }
+    ];
+
+    // Вспомогательная функция для формирования ответа "It's a..." / "It's an..."
+    function getSentence(word) {
+      const isVowel = ['a', 'e', 'i', 'o', 'u'].includes(word.trim().toLowerCase()[0]);
+      return `It's ${isVowel ? 'an' : 'a'} ${word}`;
+    }
+
+    /* 
+      =======================================================================
+      2. НАСТРОЙКИ ВОЗРАСТА И ПРАВИЛА
+      =======================================================================
+    */
+    const STUDENT_AGE = 7; // Возраст ученика
+    const IS_YOUNG = STUDENT_AGE < 10; // Автоматическое правило возраста
+
+    const LEVELS = [
+      { id: 1, title: 'Словарик' },
+      { id: 2, title: 'What\'s this? (Картинка)' },
+      { id: 3, title: IS_YOUNG ? 'What\'s this? (Перевод)' : 'What\'s this? (Дефиниция)' },
+      { id: 4, title: 'Аудио → Слово' },
+      { id: 5, title: 'Пропущенная буква' },
+      { id: 6, title: 'Собери слово' },
+      { id: 7, title: 'Диктант' }
+    ];
+
+    // Глобальное состояние
+    let currentLevel = 1;
+    let queue = [];
+    let currentItem = null;
+    let totalQuestions = 0;
+    let correctFirstTry = 0;
+    let isFirstAttempt = true;
+    let showDictTranslation = true;
+    let spellUserLetters = [];
+
+    /* 
+      =======================================================================
+      3. ОЗВУЧКА (Web Speech API)
+      =======================================================================
+    */
+    function speak(text) {
+      if (!('speechSynthesis' in window)) {
+        showToast('Озвучка не поддерживается вашим браузером');
+        return;
+      }
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-US';
+      utterance.rate = IS_YOUNG ? 0.75 : 0.85; // Медленный темп для детей
+      
+      const voices = window.speechSynthesis.getVoices();
+      const enVoice = voices.find(v => v.lang.startsWith('en') && v.name.includes('Google')) || voices.find(v => v.lang.startsWith('en'));
+      if (enVoice) utterance.voice = enVoice;
+
+      window.speechSynthesis.speak(utterance);
+    }
+
+    /* 
+      =======================================================================
+      4. ХРАНИЛИЩЕ (localStorage с try/catch)
+      =======================================================================
+    */
+    function getStars(levelId) {
+      try {
+        return parseInt(localStorage.getItem(`school_obj_lvl_${levelId}`) || '0', 10);
+      } catch (e) {
+        return 0;
+      }
+    }
+
+    function saveStars(levelId, stars) {
+      try {
+        const current = getStars(levelId);
+        if (stars > current) {
+          localStorage.setItem(`school_obj_lvl_${levelId}`, stars);
+        }
+      } catch (e) {
+        console.warn('localStorage недоступен');
+      }
+    }
+
+    /* 
+      =======================================================================
+      5. НАВИГАЦИЯ И ИНТЕРФЕЙС
+      =======================================================================
+    */
+    function showView(viewId) {
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      document.getElementById(viewId).classList.add('active');
+      
+      const header = document.getElementById('header');
+      if (viewId === 'view-menu') {
+        header.style.display = 'none';
+      } else {
+        header.style.display = 'flex';
+        const lvlObj = LEVELS.find(l => l.id === currentLevel);
+        document.getElementById('header-title').innerText = lvlObj ? `Уровень ${lvlObj.id}: ${lvlObj.title}` : '';
+      }
+    }
+
+    function goHome() {
+      window.speechSynthesis.cancel();
+      renderMenu();
+      showView('view-menu');
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.innerText = msg;
+      toast.style.display = 'block';
+      setTimeout(() => { toast.style.display = 'none'; }, 2800);
+    }
+
+    function renderMenu() {
+      const grid = document.getElementById('menu-grid');
+      grid.innerHTML = '';
+
+      LEVELS.forEach(lvl => {
+        const starsCount = getStars(lvl.id);
+        const starsStr = '⭐'.repeat(starsCount) + '☆'.repeat(3 - starsCount);
+
+        const card = document.createElement('div');
+        card.className = 'level-card';
+        card.onclick = () => startLevel(lvl.id);
+        card.innerHTML = `
+          <div class="level-info">
+            <div class="level-num">${lvl.id}</div>
+            <div class="level-title">${lvl.title}</div>
+          </div>
+          <div class="stars">${starsStr}</div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    /* 
+      =======================================================================
+      6. ЛОГИКА УРОВНЕЙ
+      =======================================================================
+    */
+    function startLevel(lvlId) {
+      currentLevel = lvlId;
+      if (lvlId === 1) {
+        renderDictionary();
+        showView('view-dict');
+      } else {
+        queue = [...WORDS].sort(() => Math.random() - 0.5);
+        totalQuestions = queue.length;
+        correctFirstTry = 0;
+        showView('view-exercise');
+        nextQuestion();
+      }
+    }
+
+    function nextQuestion() {
+      if (queue.length === 0) {
+        finishLevel();
+        return;
+      }
+
+      currentItem = queue.shift();
+      isFirstAttempt = true;
+      updateProgress();
+
+      const card = document.getElementById('exercise-card');
+      const options = document.getElementById('options-container');
+      const action = document.getElementById('action-container');
+      
+      card.innerHTML = '';
+      options.innerHTML = '';
+      action.innerHTML = '';
+
+      if (currentLevel === 2) renderLevel2(card, options);
+      else if (currentLevel === 3) renderLevel3(card, options);
+      else if (currentLevel === 4) renderLevel4(card, options);
+      else if (currentLevel === 5) renderLevel5(card, options);
+      else if (currentLevel === 6) renderLevel6(card, action);
+      else if (currentLevel === 7) renderLevel7(card, action);
+    }
+
+    function updateProgress() {
+      const done = totalQuestions - queue.length;
+      document.getElementById('progress-text').innerText = `${done} / ${totalQuestions}`;
+      const percent = (done / totalQuestions) * 100;
+      document.getElementById('progress-bar').style.width = `${percent}%`;
+    }
+
+    function getDistractors(correctWord, count = 3) {
+      const others = WORDS.filter(w => w.word !== correctWord.word);
+      return others.sort(() => Math.random() - 0.5).slice(0, count);
+    }
+
+    /* --- Уровень 1: Словарик --- */
+    function renderDictionary() {
+      const list = document.getElementById('dict-list');
+      list.innerHTML = '';
+
+      WORDS.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'dict-card';
+        const hintText = IS_YOUNG ? item.translation : item.definition;
+
+        card.innerHTML = `
+          <div class="dict-info">
+            <span style="font-size: 2.2rem;">${item.emoji}</span>
+            <div>
+              <div class="dict-word">${item.word}</div>
+              <div class="dict-trans">${showDictTranslation ? hintText : '•••'}</div>
+            </div>
+          </div>
+          <button class="btn-audio" style="width:48px; height:48px; font-size:1.2rem;" onclick="speak('${item.word}')">🔊</button>
+        `;
+        list.appendChild(card);
+      });
+    }
+
+    function toggleDictTranslation() {
+      showDictTranslation = !showDictTranslation;
+      document.getElementById('btn-toggle-trans').innerText = showDictTranslation ? '👁 Скрыть перевод' : '👁 Показать перевод';
+      renderDictionary();
+    }
+    /* --- Уровень 2: What's this? (Картинка → Ответ It's a...) --- */
+    function renderLevel2(card, options) {
+      card.innerHTML = `
+        <div class="big-emoji">${currentItem.emoji}</div>
+        <div class="prompt-text">What's this?</div>
+        <button class="btn-audio" onclick="speak('What\'s this?')">🔊</button>
+      `;
+      speak("What's this?");
+
+      const choices = [currentItem, ...getDistractors(currentItem)].sort(() => Math.random() - 0.5);
+
+      choices.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'btn-option';
+        const fullAnswer = getSentence(opt.word);
+        btn.innerText = fullAnswer;
+        btn.onclick = () => {
+          if (opt === currentItem) speak(fullAnswer);
+          handleChoice(btn, opt === currentItem);
+        };
+        options.appendChild(btn);
+      });
+    }
+
+    /* --- Уровень 3: What's this? (Подсказка/Перевод → Ответ It's a...) --- */
+    function renderLevel3(card, options) {
+      const hint = IS_YOUNG ? currentItem.translation : currentItem.definition;
+      card.innerHTML = `
+        <div class="big-emoji">💬</div>
+        <div class="prompt-text">What's this?</div>
+        <div class="prompt-sub" style="font-size: 1.6rem; font-weight: 700; color: var(--primary);">«${hint}»</div>
+        <button class="btn-audio" onclick="speak('What\'s this?')">🔊</button>
+      `;
+
+      const choices = [currentItem, ...getDistractors(currentItem)].sort(() => Math.random() - 0.5);
+
+      choices.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'btn-option';
+        const fullAnswer = getSentence(opt.word);
+        btn.innerText = fullAnswer;
+        btn.onclick = () => {
+          if (opt === currentItem) speak(fullAnswer);
+          handleChoice(btn, opt === currentItem);
+        };
+        options.appendChild(btn);
+      });
+    }
+
+    /* --- Уровень 4: Аудио → Слово --- */
+    function renderLevel4(card, options) {
+      card.innerHTML = `
+        <div class="big-emoji">❓</div>
+        <button class="btn-audio" onclick="speak('${currentItem.word}')">🔊 Повторить</button>
+      `;
+      speak(currentItem.word);
+
+      const choices = [currentItem, ...getDistractors(currentItem)].sort(() => Math.random() - 0.5);
+
+      choices.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'btn-option';
+        btn.innerText = opt.word;
+        btn.onclick = () => handleChoice(btn, opt === currentItem);
+        options.appendChild(btn);
+      });
+    }
+
+    /* --- Уровень 5: Пропущенная буква --- */
+    function renderLevel5(card, options) {
+      speak(currentItem.word);
+      const word = currentItem.word;
+      
+      let validIndices = [];
+      for(let i = 0; i < word.length; i++) {
+        if(word[i] !== ' ') validIndices.push(i);
+      }
+      const missingIdx = validIndices[Math.floor(Math.random() * validIndices.length)];
+      const correctChar = word[missingIdx].toLowerCase();
+
+      const maskedWord = word.substring(0, missingIdx) + '_' + word.substring(missingIdx + 1);
+      const hint = IS_YOUNG ? currentItem.translation : currentItem.definition;
+
+      card.innerHTML = `
+        <div class="big-emoji">${currentItem.emoji}</div>
+        <div class="prompt-text" style="letter-spacing: 4px;">${maskedWord}</div>
+        <div class="prompt-sub">${hint}</div>
+        <button class="btn-audio" style="width:48px; height:48px; font-size:1.2rem;" onclick="speak('${currentItem.word}')">🔊</button>
+      `;
+
+      const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+      let choices = [correctChar];
+      while(choices.length < 4) {
+        let randChar = alphabet[Math.floor(Math.random() * alphabet.length)];
+        if(!choices.includes(randChar)) choices.push(randChar);
+      }
+      choices.sort(() => Math.random() - 0.5);
+
+      choices.forEach(char => {
+        const btn = document.createElement('button');
+        btn.className = 'btn-option';
+        btn.style.fontSize = '1.8rem';
+        btn.innerText = char;
+        btn.onclick = () => handleChoice(btn, char === correctChar);
+        options.appendChild(btn);
+      });
+    }
+
+    /* --- Уровень 6: Собери слово --- */
+    function renderLevel6(card, action) {
+      speak(currentItem.word);
+      spellUserLetters = [];
+      const cleanWord = currentItem.word.replace(/\s+/g, '');
+      const hint = IS_YOUNG ? currentItem.translation : currentItem.definition;
+
+      card.innerHTML = `
+        <div class="big-emoji">${currentItem.emoji}</div>
+        <div class="prompt-sub">${hint}</div>
+        <button class="btn-audio" style="width:44px; height:44px; font-size:1.1rem;" onclick="speak('${currentItem.word}')">🔊</button>
+        <div class="letters-container" id="slots-container"></div>
+        <div class="letters-container" id="tiles-container"></div>
+      `;
+
+      action.innerHTML = `
+        <button class="btn-icon" onclick="eraseSpellLetter()">⬅️ Стереть</button>
+        <button class="btn-icon" onclick="resetSpell()">🔄 Заново</button>
+      `;
+
+      renderSpellState(cleanWord);
+    }
+
+    function renderSpellState(cleanWord) {
+      const slots = document.getElementById('slots-container');
+      const tiles = document.getElementById('tiles-container');
+      
+      if (!slots || !tiles) return;
+
+      slots.innerHTML = '';
+      for (let i = 0; i < cleanWord.length; i++) {
+        const slot = document.createElement('div');
+        slot.className = 'word-slot';
+        slot.innerText = spellUserLetters[i] ? spellUserLetters[i].char : '';
+        slots.appendChild(slot);
+      }
+
+      if (!tiles.hasChildNodes()) {
+        let letters = cleanWord.split('').map((char, index) => ({ char, id: index }));
+        letters.sort(() => Math.random() - 0.5);
+
+        letters.forEach(item => {
+          const tile = document.createElement('div');
+          tile.className = 'letter-tile';
+          tile.id = `tile-${item.id}`;
+          tile.innerText = item.char;
+          tile.onclick = () => selectSpellTile(item, cleanWord);
+          tiles.appendChild(tile);
+        });
+      } else {
+        const usedIds = spellUserLetters.map(l => l.id);
+        Array.from(tiles.children).forEach(tile => {
+          const id = parseInt(tile.id.replace('tile-', ''), 10);
+          if (usedIds.includes(id)) {
+            tile.classList.add('used');
+          } else {
+            tile.classList.remove('used');
+          }
+        });
+      }
+
+      if (spellUserLetters.length === cleanWord.length) {
+        const assembled = spellUserLetters.map(l => l.char).join('');
+        if (assembled === cleanWord) {
+          speak(currentItem.word);
+          handleSpellingResult(true);
+        } else {
+          handleSpellingResult(false);
+        }
+      }
+    }
+
+    function selectSpellTile(item, cleanWord) {
+      spellUserLetters.push(item);
+      renderSpellState(cleanWord);
+    }
+
+    function eraseSpellLetter() {
+      if (spellUserLetters.length > 0) {
+        spellUserLetters.pop();
+        const cleanWord = currentItem.word.replace(/\s+/g, '');
+        renderSpellState(cleanWord);
+      }
+    }
+
+    function resetSpell() {
+      spellUserLetters = [];
+      const cleanWord = currentItem.word.replace(/\s+/g, '');
+      renderSpellState(cleanWord);
+    }
+
+    function handleSpellingResult(isCorrect) {
+      if (isCorrect) {
+        showToast('Правильно! 🌟');
+        if (isFirstAttempt) correctFirstTry++;
+        setTimeout(nextQuestion, 1000);
+      } else {
+        showToast('Попробуй ещё раз! ❌');
+        if (isFirstAttempt) {
+          queue.push(currentItem);
+          isFirstAttempt = false;
+        }
+        setTimeout(resetSpell, 1000);
+      }
+    }
+
+    /* --- Уровень 7: Диктант --- */
+    function renderLevel7(card, action) {
+      speak(currentItem.word);
+
+      card.innerHTML = `
+        <div class="big-emoji">🎧</div>
+        <button class="btn-audio" onclick="speak('${currentItem.word}')">🔊 Повторить</button>
+        <div style="margin-top: 16px; width: 100%;">
+          <input type="text" id="dictation-input" class="input-dictation" placeholder="Введи слово..." autocomplete="off" spellcheck="false" autofocus />
+        </div>
+      `;
+
+      action.innerHTML = `
+        <button class="btn-action" onclick="checkDictation()">Проверить ✅</button>
+        <button class="btn-icon" onclick="showDictationHint()" style="margin-left: 8px;">💡 Подсказка</button>
+      `;
+
+      setTimeout(() => {
+        const input = document.getElementById('dictation-input');
+        if (input) {
+          input.focus();
+          input.onkeypress = (e) => { if (e.key === 'Enter') checkDictation(); };
+        }
+      }, 100);
+    }
+
+    function showDictationHint() {
+      showToast(`Первая буква: "${currentItem.word[0].toUpperCase()}"`);
+    }
+
+    function checkDictation() {
+      const input = document.getElementById('dictation-input');
+      if (!input) return;
+
+      const userVal = input.value.trim().toLowerCase();
+      const targetVal = currentItem.word.trim().toLowerCase();
+
+      if (userVal === targetVal) {
+        speak(currentItem.word);
+        input.style.borderColor = 'var(--success)';
+        showToast('Отлично! 🎯');
+        if (isFirstAttempt) correctFirstTry++;
+        setTimeout(nextQuestion, 1000);
+      } else {
+        input.style.borderColor = 'var(--danger)';
+        showToast('Ошибочка! Попробуем в конце уровня 🔄');
+        if (isFirstAttempt) {
+          queue.push(currentItem);
+          isFirstAttempt = false;
+        }
+        setTimeout(() => {
+          input.value = '';
+          input.style.borderColor = '#E2E8F0';
+          input.focus();
+        }, 1200);
+      }
+    }
+
+    /* 
+      =======================================================================
+      7. ОБРАБОТКА ОТВЕТОВ И ОКОНЧАНИЕ УРОВНЯ
+      =======================================================================
+    */
+    function handleChoice(btnElement, isCorrect) {
+      const allBtns = document.querySelectorAll('.btn-option');
+      allBtns.forEach(b => b.style.pointerEvents = 'none');
+
+      if (isCorrect) {
+        btnElement.classList.add('correct');
+        btnElement.innerHTML += ' ✔️️';
+        if (currentLevel !== 2 && currentLevel !== 3) {
+          speak(currentItem.word);
+        }
+        if (isFirstAttempt) correctFirstTry++;
+        setTimeout(nextQuestion, 1200);
+      } else {
+        btnElement.classList.add('wrong');
+        btnElement.innerHTML += ' ❌';
+        if (isFirstAttempt) {
+          queue.push(currentItem);
+          isFirstAttempt = false;
+        }
+        
+        allBtns.forEach(b => {
+          const targetSentence = getSentence(currentItem.word);
+          if (b.innerText === currentItem.word || 
+              b.innerText === targetSentence ||
+              b.innerText === currentItem.translation || 
+              b.innerText === currentItem.definition) {
+            b.classList.add('correct');
+          }
+        });
+
+        setTimeout(nextQuestion, 1800);
+      }
+    }
+
+    function finishLevel() {
+      const ratio = correctFirstTry / totalQuestions;
+      let stars = 1;
+      if (ratio >= 0.85) stars = 3;
+      else if (ratio >= 0.5) stars = 2;
+
+      saveStars(currentLevel, stars);
+
+      document.getElementById('final-stars').innerText = '⭐'.repeat(stars) + '☆'.repeat(3 - stars);
+      document.getElementById('final-score').innerText = `Верно с первого раза: ${correctFirstTry} из ${totalQuestions}`;
+
+      showView('view-final');
+    }
+
+    function restartLevel() {
+      startLevel(currentLevel);
+    }
+
+    function nextLevel() {
+      if (currentLevel < 7) {
+        startLevel(currentLevel + 1);
+      } else {
+        goHome();
+      }
+    }
+
+    window.onload = () => {
+      renderMenu();
+    };
+  </script>
+</body>
+</html>
